@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>20 个值得收藏的 AI 小工具</title>
+    <meta
+      name="description"
+      content="面向知识工作、创作、学习、开发和自动化的 20 个 AI 小工具合集。"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="返回首页">
+        <span class="brand-mark">AI</span>
+        <span>AI 工具集</span>
+      </a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a href="#tools">工具</a>
+        <a href="#categories">分类</a>
+        <a href="#compare">对比</a>
+        <a href="#notes">说明</a>
+      </nav>
+      <button class="saved-button" id="savedButton" type="button" title="查看已收藏工具">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6.5 4.75h11v15l-5.5-3.2-5.5 3.2z" />
+        </svg>
+        <span>我的收藏</span>
+        <strong id="savedCount">0</strong>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1><span>20 个值得收藏的</span><span>AI 小工具</span></h1>
+          <p>
+            为写作、检索、设计、视频、语音、会议、编程和自动化场景精选一组上手快、用途清晰的 AI 工具。
+          </p>
+
+          <div class="controls-panel" aria-label="工具筛选">
+            <label class="search-box">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m21 21-4.2-4.2m1.2-5.3a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" />
+              </svg>
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="搜索工具名、用途或场景，例如：PPT、翻译、代码"
+                autocomplete="off"
+              />
+            </label>
+
+            <div class="filter-row">
+              <div class="segmented" id="categoryTabs" aria-label="分类筛选"></div>
+              <label class="select-label">
+                <span>定价</span>
+                <select id="priceFilter">
+                  <option value="all">全部</option>
+                  <option value="free">有免费层</option>
+                  <option value="trial">试用/额度制</option>
+                  <option value="paid">偏付费</option>
+                </select>
+              </label>
+              <label class="toggle">
+                <input id="chineseToggle" type="checkbox" />
+                <span>只看中文友好</span>
+              </label>
+              <label class="select-label">
+                <span>排序</span>
+                <select id="sortSelect">
+                  <option value="rank">推荐优先</option>
+                  <option value="easy">上手更快</option>
+                  <option value="name">名称 A-Z</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <img src="./assets/ai-tools-hero.png" alt="" />
+        </div>
+      </section>
+
+      <section class="featured-section" aria-labelledby="featuredTitle">
+        <div class="section-heading">
+          <h2 id="featuredTitle">编辑精选</h2>
+          <p>从通用、搜索和创作三个高频入口开始，覆盖大多数日常任务。</p>
+        </div>
+        <div class="featured-grid" id="featuredGrid"></div>
+      </section>
+
+      <section class="tools-section" id="tools" aria-labelledby="toolsTitle">
+        <div class="section-heading compact">
+          <div>
+            <h2 id="toolsTitle">全部工具</h2>
+            <p id="resultMeta">共 20 个工具</p>
+          </div>
+          <button class="clear-button" id="clearFilters" type="button">清空筛选</button>
+        </div>
+        <div class="tool-grid" id="toolGrid"></div>
+        <p class="empty-state" id="emptyState" hidden>没有匹配的工具，试试减少筛选条件。</p>
+      </section>
+
+      <section class="category-section" id="categories" aria-labelledby="categoryTitle">
+        <div class="section-heading">
+          <h2 id="categoryTitle">按场景浏览</h2>
+          <p>把工具放回工作流里看，会比单纯看榜单更容易选择。</p>
+        </div>
+        <div class="category-grid" id="categoryGrid"></div>
+      </section>
+
+      <section class="compare-section" id="compare" aria-labelledby="compareTitle">
+        <div class="section-heading compact">
+          <div>
+            <h2 id="compareTitle">快速对比</h2>
+            <p id="compareHint">默认展示精选工具；收藏后会优先对比你的收藏。</p>
+          </div>
+          <button class="clear-button" id="clearSaved" type="button">清空收藏</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>工具</th>
+                <th>类别</th>
+                <th>最适合</th>
+                <th>中文支持</th>
+                <th>上手</th>
+                <th>定价提示</th>
+              </tr>
+            </thead>
+            <tbody id="compareBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="notes-section" id="notes" aria-labelledby="notesTitle">
+        <h2 id="notesTitle">更新说明</h2>
+        <p>
+          数据更新：2026-06-07。链接指向各工具官方站点；推荐顺序按通用性、上手速度、中文可用性和场景覆盖综合整理。
+        </p>
+        <p>
+          AI 产品迭代很快，具体价格、地区可用性和功能限制请以官方页面为准。这个合集适合学习、选型和日常效率参考。
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>AI 工具集</span>
+      <a href="#top">回到顶部</a>
+    </footer>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
