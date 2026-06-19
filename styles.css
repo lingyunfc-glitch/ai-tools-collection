@@ -12,6 +12,7 @@
   --amber: #f3ad22;
   --ink: #111519;
   --shadow: 0 18px 50px rgba(17, 21, 25, 0.08);
+  --shadow-strong: 0 26px 70px rgba(17, 21, 25, 0.12);
   --radius: 8px;
   --max: 1440px;
   font-family:
@@ -59,6 +60,24 @@ select {
   background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(14px);
+  transition: box-shadow 180ms ease, background 180ms ease;
+}
+
+.site-header.is-scrolled {
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 10px 32px rgba(17, 21, 25, 0.07);
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 67px;
+  left: 0;
+  z-index: 24;
+  width: var(--scroll-progress, 0%);
+  height: 2px;
+  background: var(--tomato);
+  pointer-events: none;
+  transition: width 80ms linear;
 }
 
 .brand,
@@ -83,6 +102,13 @@ select {
   color: white;
   border-radius: 8px;
   font-size: 14px;
+  transform: rotate(-3deg);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.brand:hover .brand-mark {
+  background: var(--teal-dark);
+  transform: rotate(0deg) scale(1.04);
 }
 
 .nav-links {
@@ -175,6 +201,25 @@ main {
   display: block;
 }
 
+.hero-copy h1 span:last-child {
+  position: relative;
+  width: fit-content;
+}
+
+.hero-copy h1 span:last-child::after {
+  position: absolute;
+  right: 2px;
+  bottom: -9px;
+  left: 4px;
+  height: 7px;
+  background: var(--teal);
+  content: "";
+  opacity: 0.9;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: draw-line 700ms 500ms ease forwards;
+}
+
 .hero-copy p {
   max-width: 710px;
   margin: 22px 0 0;
@@ -199,6 +244,13 @@ main {
   border-radius: 8px;
   background: white;
   box-shadow: 0 10px 24px rgba(17, 21, 25, 0.05);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.search-box:focus-within {
+  border-color: var(--teal);
+  box-shadow: 0 14px 30px rgba(0, 155, 139, 0.13);
+  transform: translateY(-1px);
 }
 
 .search-box input {
@@ -241,6 +293,13 @@ main {
   cursor: pointer;
   font-size: 14px;
   font-weight: 700;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.segment:hover,
+.clear-button:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
 }
 
 .segment[data-active="true"] {
@@ -289,6 +348,13 @@ main {
   display: grid;
   min-height: 430px;
   place-items: center;
+  perspective: 1200px;
+}
+
+.visual-frame {
+  position: relative;
+  width: min(100%, 720px);
+  animation: visual-float 6s ease-in-out infinite;
 }
 
 .hero-visual img {
@@ -296,6 +362,34 @@ main {
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 28px 55px rgba(17, 21, 25, 0.12));
+}
+
+.visual-note {
+  position: absolute;
+  display: grid;
+  min-width: 76px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 30px rgba(17, 21, 25, 0.1);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.note-one {
+  top: 17%;
+  right: 3%;
+  animation: note-bob 4s ease-in-out infinite;
+}
+
+.note-two {
+  bottom: 17%;
+  left: 3%;
+  animation: note-bob 4s 1.2s ease-in-out infinite;
 }
 
 section {
@@ -306,6 +400,113 @@ section {
 
 .featured-section {
   border-top: 1px solid var(--line);
+}
+
+.wechat-promo {
+  max-width: none;
+  padding: 0;
+  background: var(--ink);
+  color: white;
+}
+
+.wechat-promo-inner {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr) auto;
+  gap: 26px;
+  align-items: center;
+  max-width: var(--max);
+  min-height: 184px;
+  margin: 0 auto;
+  padding: 34px clamp(18px, 4vw, 48px);
+}
+
+.wechat-signal {
+  display: flex;
+  height: 72px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+}
+
+.wechat-signal span {
+  width: 6px;
+  height: 22px;
+  border-radius: 3px;
+  background: var(--teal);
+  animation: signal-wave 1.25s ease-in-out infinite;
+}
+
+.wechat-signal span:nth-child(2),
+.wechat-signal span:nth-child(4) {
+  animation-delay: 150ms;
+}
+
+.wechat-signal span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+.wechat-copy p,
+.wechat-copy h2,
+.wechat-copy span {
+  margin: 0;
+}
+
+.wechat-copy {
+  min-width: 0;
+}
+
+.wechat-copy p {
+  margin-bottom: 8px;
+  color: var(--amber);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.wechat-copy h2 {
+  font-size: clamp(24px, 3vw, 38px);
+  line-height: 1.22;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.wechat-copy > span {
+  display: block;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+}
+
+.wechat-copy-button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 8px;
+  background: white;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.wechat-copy-button:hover {
+  background: var(--amber);
+  transform: translateY(-2px);
+}
+
+.wechat-copy-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .section-heading {
@@ -363,12 +564,30 @@ section {
     border-color 160ms ease,
     transform 160ms ease,
     box-shadow 160ms ease;
+  overflow: hidden;
+}
+
+.tool-card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: var(--icon-fg, var(--teal));
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms ease;
 }
 
 .tool-card:hover {
   border-color: var(--line-strong);
   box-shadow: var(--shadow);
   transform: translateY(-2px);
+}
+
+.tool-card:hover::before {
+  transform: scaleX(1);
 }
 
 .tool-card.featured {
@@ -450,6 +669,12 @@ section {
   background: white;
   color: #73797d;
   cursor: pointer;
+  transition: color 150ms ease, background 150ms ease, transform 150ms ease;
+}
+
+.favorite:hover {
+  color: var(--tomato);
+  transform: rotate(-7deg) scale(1.06);
 }
 
 .favorite[aria-pressed="true"] {
@@ -647,6 +872,75 @@ tr:last-child td {
   font-size: 14px;
 }
 
+.toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 40;
+  max-width: min(340px, calc(100vw - 44px));
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  box-shadow: var(--shadow-strong);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 750;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.motion-ready .reveal-item {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 560ms ease, transform 560ms ease;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.motion-ready .reveal-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-copy {
+  animation: hero-enter 620ms ease both;
+}
+
+.hero-visual {
+  animation: hero-enter 720ms 100ms ease both;
+}
+
+@keyframes hero-enter {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes draw-line {
+  to { transform: scaleX(1); }
+}
+
+@keyframes visual-float {
+  0%, 100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-10px) rotateX(1.5deg); }
+}
+
+@keyframes note-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes signal-wave {
+  0%, 100% { height: 18px; opacity: 0.55; }
+  50% { height: 48px; opacity: 1; }
+}
+
 .footer a {
   color: var(--teal-dark);
   font-weight: 800;
@@ -682,11 +976,15 @@ tr:last-child td {
 @media (max-width: 760px) {
   .site-header {
     position: relative;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     gap: 12px;
     min-height: auto;
     padding-top: 12px;
     padding-bottom: 12px;
+  }
+
+  .scroll-progress {
+    top: 116px;
   }
 
   .nav-links {
@@ -697,8 +995,12 @@ tr:last-child td {
   }
 
   .saved-button {
-    grid-column: 2;
-    grid-row: 1;
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    width: 48px;
+    justify-content: center;
+    padding: 0 6px;
   }
 
   .nav-links a {
@@ -726,6 +1028,37 @@ tr:last-child td {
   .hero-copy p {
     max-width: 350px;
     font-size: 16px;
+  }
+
+  .visual-note {
+    min-width: 66px;
+    height: 30px;
+    font-size: 10px;
+  }
+
+  .wechat-promo-inner {
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 18px;
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+
+  .wechat-signal {
+    height: 62px;
+  }
+
+  .wechat-copy h2 {
+    font-size: 20px;
+    line-height: 1.35;
+  }
+
+  .wechat-copy-button {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
   }
 
   .controls-panel,
@@ -788,6 +1121,11 @@ tr:last-child td {
     padding-top: 38px;
     padding-bottom: 38px;
   }
+
+  .footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 420px) {
@@ -804,5 +1142,18 @@ tr:last-child td {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+
+  .hero-copy,
+  .hero-visual,
+  .visual-frame,
+  .visual-note,
+  .wechat-signal span {
+    animation: none !important;
+  }
+
+  .motion-ready .reveal-item {
+    opacity: 1;
+    transform: none;
   }
 }
