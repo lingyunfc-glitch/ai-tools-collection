@@ -8,7 +8,8 @@
       name="description"
       content="面向知识工作、创作、学习、开发和自动化的 20 个 AI 小工具合集。"
     />
-    <link rel="stylesheet" href="./styles.css" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="stylesheet" href="./styles.css?v=20260619.2" />
   </head>
   <body>
     <header class="site-header">
@@ -20,6 +21,7 @@
         <a href="#tools">工具</a>
         <a href="#categories">分类</a>
         <a href="#compare">对比</a>
+        <a href="#wechat">公众号</a>
         <a href="#notes">说明</a>
       </nav>
       <button class="saved-button" id="savedButton" type="button" title="查看已收藏工具">
@@ -30,6 +32,7 @@
         <strong id="savedCount">0</strong>
       </button>
     </header>
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
     <main id="top">
       <section class="hero">
@@ -80,9 +83,33 @@
         </div>
 
         <div class="hero-visual" aria-hidden="true">
-          <img src="./assets/ai-tools-hero.png" alt="" />
+          <div class="visual-frame">
+            <img src="./assets/ai-tools-hero.png?v=20260619.2" alt="" />
+            <span class="visual-note note-one">20 个工具</span>
+            <span class="visual-note note-two">7 类场景</span>
+          </div>
         </div>
       </section>
+
+      <aside class="wechat-promo reveal-block" id="wechat" aria-labelledby="wechatTitle">
+        <div class="wechat-promo-inner">
+          <div class="wechat-signal" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="wechat-copy">
+            <p>每天更新一点 AI 灵感</p>
+            <h2 id="wechatTitle">欢迎大家关注微信公众号：每天聊一聊AI</h2>
+            <span>在微信里搜索公众号名称，即可找到我们。</span>
+          </div>
+          <button class="wechat-copy-button" id="copyWechat" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+              <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+            </svg>
+            <span>复制公众号名称</span>
+          </button>
+        </div>
+      </aside>
 
       <section class="featured-section" aria-labelledby="featuredTitle">
         <div class="section-heading">
@@ -140,7 +167,7 @@
       <section class="notes-section" id="notes" aria-labelledby="notesTitle">
         <h2 id="notesTitle">更新说明</h2>
         <p>
-          数据更新：2026-06-07。链接指向各工具官方站点；推荐顺序按通用性、上手速度、中文可用性和场景覆盖综合整理。
+          数据更新：2026-06-19。链接指向各工具官方站点；推荐顺序按通用性、上手速度、中文可用性和场景覆盖综合整理。
         </p>
         <p>
           AI 产品迭代很快，具体价格、地区可用性和功能限制请以官方页面为准。这个合集适合学习、选型和日常效率参考。
@@ -150,9 +177,11 @@
 
     <footer class="footer">
       <span>AI 工具集</span>
+      <span>微信公众号：每天聊一聊AI</span>
       <a href="#top">回到顶部</a>
     </footer>
 
-    <script src="./app.js"></script>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js?v=20260619.2"></script>
   </body>
 </html>
