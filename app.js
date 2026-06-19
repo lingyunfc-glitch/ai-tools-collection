@@ -343,7 +343,13 @@ const elements = {
   categoryGrid: document.querySelector("#categoryGrid"),
   compareBody: document.querySelector("#compareBody"),
   compareHint: document.querySelector("#compareHint"),
+  copyWechat: document.querySelector("#copyWechat"),
+  toast: document.querySelector("#toast"),
+  scrollProgress: document.querySelector("#scrollProgress"),
 };
+
+let revealObserver;
+let toastTimer;
 
 function iconStar() {
   return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.75 2.5 5.08 5.6.81-4.05 3.95.96 5.58L12 16.54l-5.01 2.63.96-5.58L3.9 9.64l5.6-.81L12 3.75Z"/></svg>';
@@ -441,11 +447,13 @@ function renderTools() {
   elements.toolGrid.innerHTML = result.map((tool) => renderCard(tool)).join("");
   elements.resultMeta.textContent = `显示 ${result.length} / ${tools.length} 个工具`;
   elements.emptyState.hidden = result.length > 0;
+  prepareMotion(elements.toolGrid.querySelectorAll(".tool-card"));
 }
 
 function renderFeatured() {
   const featuredTools = featuredNames.map((name) => tools.find((tool) => tool.name === name)).filter(Boolean);
   elements.featuredGrid.innerHTML = featuredTools.map((tool) => renderCard(tool, true)).join("");
+  prepareMotion(elements.featuredGrid.querySelectorAll(".tool-card"));
 }
 
 function renderCategories() {
@@ -497,6 +505,68 @@ function renderCompare() {
 function updateSavedCount() {
   elements.savedCount.textContent = saved.size;
   localStorage.setItem("aiToolSaved", JSON.stringify([...saved]));
+}
+
+function prepareMotion(nodes) {
+  if (!revealObserver) return;
+  [...nodes].forEach((node, index) => {
+    node.classList.add("reveal-item");
+    node.style.setProperty("--reveal-delay", `${Math.min(index, 7) * 45}ms`);
+    revealObserver.observe(node);
+  });
+}
+
+function setupMotion() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.12 },
+  );
+
+  document.body.classList.add("motion-ready");
+  document.querySelectorAll(".reveal-block, .section-heading, .category-grid, .table-wrap, .notes-section").forEach((node, index) => {
+    node.classList.add("reveal-item");
+    node.style.setProperty("--reveal-delay", `${Math.min(index, 4) * 35}ms`);
+    revealObserver.observe(node);
+  });
+}
+
+function showToast(message) {
+  window.clearTimeout(toastTimer);
+  elements.toast.textContent = message;
+  elements.toast.classList.add("is-visible");
+  toastTimer = window.setTimeout(() => elements.toast.classList.remove("is-visible"), 2200);
+}
+
+async function copyWechatName() {
+  const name = "每天聊一聊AI";
+  try {
+    await navigator.clipboard.writeText(name);
+  } catch {
+    const input = document.createElement("textarea");
+    input.value = name;
+    input.style.position = "fixed";
+    input.style.opacity = "0";
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    input.remove();
+  }
+  showToast("已复制公众号名称：每天聊一聊AI");
+}
+
+function updateScrollUI() {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+  elements.scrollProgress.style.setProperty("--scroll-progress", `${progress}%`);
+  document.querySelector(".site-header").classList.toggle("is-scrolled", window.scrollY > 12);
 }
 
 function rerender() {
@@ -555,5 +625,11 @@ elements.savedButton.addEventListener("click", () => {
   document.querySelector("#compare").scrollIntoView({ behavior: "smooth" });
 });
 
+elements.copyWechat.addEventListener("click", copyWechatName);
+window.addEventListener("scroll", updateScrollUI, { passive: true });
+
+setupMotion();
 renderCategories();
 rerender();
+prepareMotion(document.querySelectorAll(".category-card"));
+updateScrollUI();
